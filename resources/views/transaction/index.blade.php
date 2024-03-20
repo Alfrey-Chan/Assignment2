@@ -1,0 +1,58 @@
+@push('styles')
+    @vite('resources/css/index.css')
+@endpush
+
+<x-layout>
+    <div class="transaction-container">
+        <a href="{{ route('transaction.create') }}" class="new-transaction-btn">
+            New Transaction
+        </a>
+        <div class="transactions">
+            <table class="content-table">
+                <thead>
+                    <th>{{ $headers[0] }}</th> {{-- id --}}
+                    <th>{{ $headers[1] }}</th> {{-- date --}}
+                    <th>{{ $headers[2] }}</th> {{-- vendor --}}
+                    <th>{{ $headers[3] }}</th> {{-- category --}}
+                    <th>{{ $headers[4] }}</th> {{-- spend --}}
+                    <th>{{ $headers[5] }}</th> {{-- deposit --}}
+                    <th>{{ $headers[6] }}</th> {{-- balance --}}
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    @foreach ($transactions as $transaction)  
+                    <tr>
+                        <td>{{ $transaction->id }}</td>
+                        <td>{{ $transaction->date }}</td>
+                        <td>{{ $transaction->vendor }}</td> 
+                        <td>{{ $transaction->category }}</td>
+                        <td>{{ $transaction->spend }}</td>
+                        <td>{{ $transaction->deposit }}</td>
+                        <td>{{ $transaction->balance }}</td>
+                        <td>
+                            <div class="transaction-actions">
+                                <a href="{{ route('transaction.show', $transaction) }}" class="transaction-view-button">View</a>
+                                <a href="{{ route('transaction.edit', $transaction) }}" class="transaction-edit-button">Edit</a>
+                                <form action="{{ route('transaction.destroy', $transaction) }}" method="POST" class="delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="transaction-delete-button">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+
+            {{-- {{ $transactions->links() }} --}}
+        </div>
+    </div>
+    
+    @push('scripts')
+        @vite('resources/js/index.js')
+    @endpush
+</x-layout>
+
+
