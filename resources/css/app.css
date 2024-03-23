@@ -27,22 +27,17 @@ nav li {
     margin: 0 8px;
 }
 
-.transaction-container {
-    /* max-width: 980px; */
-    /* margin: 0 auto; */
-}
-
-.transaction-date {
+/* .transaction-date {
     margin-top: 20px;
     font-size: 13px;
     font-style: italic;
     color: rgb(92, 92, 92);
-}
+} */
 
-.success-message {
+/* .success-message {
     padding: 15px 25px;
     background-color: rgb(0, 165, 44);
     color: white;
     border-radius: 4px;
     margin-bottom: 30px;
-}
+} */
