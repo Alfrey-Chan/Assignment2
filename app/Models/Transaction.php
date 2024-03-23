@@ -9,7 +9,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaction extends Model
-{
+{   
+    protected $fillable = [ // TODO
+        'date',
+        'vendor',
+        'category',
+        'spend',
+        'deposit',
+        'balance'
+    ];
+
     // use HasFactory;
     public static function loadCsvData($filePath) {
         try {
@@ -26,9 +35,6 @@ class Transaction extends Model
 
                     // search for a vendor in buckets table, where $vendor is a substring of it
                     $category = Bucket::whereRaw("LOWER(?) LIKE LOWER(concat('%', `vendor`, '%'))", [$vendor])->value('category');
-
-                    // Log::info("Vendor: $vendor");
-                    // Log::info("Category: $category");
     
                     $transaction = new Transaction([
                         'date' => $date,
@@ -38,7 +44,6 @@ class Transaction extends Model
                         'deposit' => $row[3] ? $row[3] : 0, // if no deposit value, set to 0
                         'balance' => $row[4]
                     ]);
-    
                     $transaction->save();
                 }
                 fclose($handle);
@@ -59,5 +64,85 @@ class Transaction extends Model
         if (!copy($filePath, $newFilePath)) {
             throw new Exception("Failed to move and rename file: $filePath");
         } 
+    }
+
+    public static function createNewTransaction($data) {
+        // $date = $data->date;
+        // $vendor = $data->vendor;
+        // $spend = $data->spend ? $data->spend : 0;
+        // $deposit = $data->deposit ? $data->deposit : 0; 
+        $date = $data['date'];
+        $vendor = $data['vendor'];
+        $spend = $data['spend'] ? $data['spend'] : 0;
+        $deposit = $data['deposit'] ? $data['deposit'] : 0;
+        $balance = $data ['balance'];
+
+
+        // $balance = Transaction::calculateBalance($date, $spend, $deposit);
+        if ($balance < 0) {
+            throw new \Exception("Transaction failed. Balance cannot be less than 0.");
+        }
+       
+        $category = Transaction::mapCategory($vendor);
+        
+        $transaction = new Transaction([
+            'date' => $date,
+            'vendor' => $vendor,
+            'category' => $category,
+            'spend' => $spend,
+            'deposit' => $deposit,
+            'balance' => $balance
+        ]);
+        $transaction->save();
+
+        return $transaction;
+    }
+
+    public static function calculateBalance($date, $spend, $deposit) {
+        // Find the most recent transaction before the new one
+        $previousTransaction = Transaction::where('date', '<', $date) // get all transactions with date less than the new transaction
+                                    ->orderBy('date', 'desc') 
+                                    ->first(); // first row is the most recent
+
+        $startBalance = $previousTransaction ? $previousTransaction->balance : 0;
+        $balance = $startBalance + $deposit - $spend; // null is treated as 0 in PHP
+
+        return $balance;
+    }
+
+    public static function mapCategory($vendor) {
+        $mappedCategory = Bucket::whereRaw("LOWER(?) LIKE LOWER(concat('%', `vendor`, '%'))", [$vendor])->value('category');
+        $category = $mappedCategory ? $mappedCategory : "Miscellaneous";
+
+        return $category;
+    }
+
+    public static function updateSubsequentBalances($transaction) {
+        $subsequentTransactions = Transaction::where('date', '>', $transaction->date)
+                                ->orderBy('date', 'asc')
+                                ->get();
+
+        $currentBalance = $transaction->balance;
+        foreach ($subsequentTransactions as $subsequentTransaction) {
+            $currentBalance += $subsequentTransaction->deposit - $subsequentTransaction->spend;
+            $subsequentTransaction->balance = $currentBalance;
+            $subsequentTransaction->save();
+        }
+    }
+
+    public static function checkNegativeBalances($data) {
+        $currentBalance = $data['balance'];
+        $subsequentTransactions = Transaction::where('date', '>', $data['date'])
+                                ->orderBy('date', 'asc')
+                                ->get();
+    
+        foreach ($subsequentTransactions as $subsequentTransaction) {
+            $currentBalance += $subsequentTransaction->deposit - $subsequentTransaction->spend;
+            if ($currentBalance < 0) {
+                return false;
+            }
+        }
+    
+        return true;
     }
 }
