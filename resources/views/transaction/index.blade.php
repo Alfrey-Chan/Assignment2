@@ -4,6 +4,13 @@
 
 <x-layout>
     <div class="transaction-container">
+
+        @if (session('success'))
+            <div class="success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <a href="{{ route('transaction.create') }}" class="new-transaction-btn">
             New Transaction
         </a>
@@ -45,8 +52,10 @@
                 </tbody>
             </table>
 
+            <div class="pagination-container">
+                {{ $transactions->links() }}
+            </div>
 
-            {{-- {{ $transactions->links() }} --}}
         </div>
     </div>
     
