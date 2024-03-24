@@ -4,12 +4,24 @@ namespace App\Models;
 
 use DateTime;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Prompts\Output\ConsoleOutput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaction extends Model
-{
+{ 
+  /** 
+  * In Laravel, Eloquent will assume the primary key is 'id'. So in route model binding,
+  * transaction/{transaction}/edit, {transaction} will be the 'id' of the transaction.
+  * If you have a diff primary key, you can specify it like this: 
+  *
+  * protected $primaryKey = "transaction_id";
+  *
+  * Otherwise, 'id' will be searched in the table, and error will be thrown if not found.
+  */
+
   protected $fillable = [ // TODO
     'date',
     'vendor',
@@ -70,18 +82,12 @@ class Transaction extends Model
 
   public static function createNewTransaction($data)
   {
-    // $date = $data->date;
-    // $vendor = $data->vendor;
-    // $spend = $data->spend ? $data->spend : 0;
-    // $deposit = $data->deposit ? $data->deposit : 0; 
     $date = $data['date'];
     $vendor = $data['vendor'];
     $spend = $data['spend'] ? $data['spend'] : 0;
     $deposit = $data['deposit'] ? $data['deposit'] : 0;
     $balance = $data['balance'];
 
-
-    // $balance = Transaction::calculateBalance($date, $spend, $deposit);
     if ($balance < 0) {
       throw new \Exception("Transaction failed. Balance cannot be less than 0.");
     }
@@ -122,17 +128,27 @@ class Transaction extends Model
     return $category;
   }
 
-  public static function updateSubsequentBalances($transaction)
-  {
-    $subsequentTransactions = Transaction::where('date', '>', $transaction->date)
-      ->orderBy('date', 'asc')
-      ->get();
+  public static function updateSubsequentBalances()
+  { 
+    // Fetch the earliest transaction
+    $earliestTransaction = self::orderBy('date', 'asc')->first();
 
-    $currentBalance = $transaction->balance;
-    foreach ($subsequentTransactions as $subsequentTransaction) {
-      $currentBalance += $subsequentTransaction->deposit - $subsequentTransaction->spend;
-      $subsequentTransaction->balance = $currentBalance;
-      $subsequentTransaction->save();
+    // Set the starting balance to the balance of the earliest transaction
+    $balance = $earliestTransaction->balance;
+
+    // Fetch all transactions except the earliest one, sorted by date
+    $transactions = self::where('id', '!=', $earliestTransaction->id)
+                                ->orderBy('date', 'asc')
+                                ->get();
+
+    foreach ($transactions as $transaction) {
+        // Calculate the new balance
+        $balance -= $transaction->spend;
+        $balance += $transaction->deposit;
+
+        // Update the balance for the current transaction
+        $transaction->balance = $balance;
+        $transaction->save();
     }
   }
 
@@ -146,10 +162,23 @@ class Transaction extends Model
     foreach ($subsequentTransactions as $subsequentTransaction) {
       $currentBalance += $subsequentTransaction->deposit - $subsequentTransaction->spend;
       if ($currentBalance < 0) {
-        return false;
+        throw new \Exception("Error: Subsequent tranction balance(s) resulted in less than 0");
       }
     }
 
     return true;
+  }
+
+  public static function updateTransaction(Transaction $transaction, Request $request) 
+  {
+    $transaction->date = $request->date;
+    $transaction->vendor = $request->vendor;
+    $transaction->spend = $request->spend;
+    $transaction->deposit = $request->deposit;
+    $transaction->balance = $request->balance;
+
+    $transaction->save();
+
+    return $transaction;
   }
 }

@@ -19,7 +19,8 @@
             Transactions
         </div>
         <div class="flex justify-center w-full h-full rounded-lg my-4 ">
-            <table style="border-radius: 1rem; overflow:hidden;" class="w-4/5 md:w-3/4 lg:w-1/2 divide-y divide-gray-200 shadow-xl  ">
+            <table style="border-radius: 1rem; overflow:hidden;"
+                class="w-4/5 md:w-3/4 lg:w-1/2 divide-y divide-gray-200 shadow-xl  ">
                 <thead class="text-center bg-white">
 
                     @for ($i = 1; $i <= 7; $i++)
@@ -40,15 +41,14 @@
                             <td class="py-6">{{ $transaction->balance }}</td>
                             <td class="md:px-6">
                                 <div class="flex gap-2 justify-center text-zinc-900">
-                                    <a href="{{ route('transaction.show', $transaction) }}"><button
-                                            class="btn bg-green-300 px-3">VIEW</button></a>
                                     <a href="{{ route('transaction.edit', $transaction) }}"><button
-                                            class="btn bg-blue-400 px-3">EDIT</button></a>
+                                            class="btn px-3">EDIT</button></a>
                                     <form action="{{ route('transaction.destroy', $transaction) }}" method="POST"
                                         class="delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn bg-red-600 px-2">DELETE</button>
+                                        <button type="submit" class="btn bg-red-400 px-2"
+                                            onclick="return confirm('Are you sure you want to delete this transaction?')">DELETE</button>
                                     </form>
 
                                 </div>
@@ -61,9 +61,9 @@
 
 
 
-    <div class="flex justify-center w-full my-4">
-        {{ $transactions->links() }}
-    </div>
+        <div class="flex justify-center w-full my-4">
+            {{ $transactions->links() }}
+        </div>
     </div>
 
     @push('scripts')
