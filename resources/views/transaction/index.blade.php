@@ -37,14 +37,15 @@
                         <td>{{ $transaction->deposit }}</td>
                         <td>{{ $transaction->balance }}</td>
                         <td>
-                            <div class="transaction-actions">
-                                <a href="{{ route('transaction.show', $transaction) }}" class="transaction-view-button">View</a>
-                                <a href="{{ route('transaction.edit', $transaction) }}" class="transaction-edit-button">Edit</a>
-                                <form action="{{ route('transaction.destroy', $transaction) }}" method="POST" class="delete-form">
+                            <div class="flex gap-2">
+                                <a href="{{ route('transaction.show', $transaction) }}" ><button class="bg-green-300 rounded py-1 px-2">View</button></a>
+                                <a href="{{ route('transaction.edit', $transaction) }}"><button class="bg-blue-400 rounded px-3  py-1">Edit</button></a>
+                                                                <form action="{{ route('transaction.destroy', $transaction) }}" method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="transaction-delete-button">Delete</button>
+                                    <button type="submit" class="bg-red-400 rounded p-1">Delete</button>
                                 </form>
+                            
                             </div>
                         </td>
                     </tr>
