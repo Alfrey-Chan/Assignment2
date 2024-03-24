@@ -128,18 +128,27 @@ class Transaction extends Model
     return $category;
   }
 
-  public static function updateSubsequentBalances(Transaction $transaction)
+  public static function updateSubsequentBalances()
   { 
-    $subsequentTransactions = Transaction::where('date', '>', $transaction->date)
-      ->orderBy('date', 'asc')
-      ->orderBy('id', 'asc')
-      ->get();
+    // Fetch the earliest transaction
+    $earliestTransaction = self::orderBy('date', 'asc')->first();
 
-    $currentBalance = $transaction->balance;
-    foreach ($subsequentTransactions as $subsequentTransaction) {
-      $currentBalance += $subsequentTransaction->deposit - $subsequentTransaction->spend;
-      $subsequentTransaction->balance = $currentBalance;
-      $subsequentTransaction->save();
+    // Set the starting balance to the balance of the earliest transaction
+    $balance = $earliestTransaction->balance;
+
+    // Fetch all transactions except the earliest one, sorted by date
+    $transactions = self::where('id', '!=', $earliestTransaction->id)
+                                ->orderBy('date', 'asc')
+                                ->get();
+
+    foreach ($transactions as $transaction) {
+        // Calculate the new balance
+        $balance -= $transaction->spend;
+        $balance += $transaction->deposit;
+
+        // Update the balance for the current transaction
+        $transaction->balance = $balance;
+        $transaction->save();
     }
   }
 
