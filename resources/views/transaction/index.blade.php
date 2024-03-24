@@ -5,7 +5,7 @@
 <x-layout>
     <div class="flex flex-col w-full justify-center items-center">
         @if (session('success'))
-            <div class="success">
+            <div class="success text-green-500">
                 {{ session('success') }}
             </div>
         @endif
@@ -36,7 +36,7 @@
                 <tbody>
                     @foreach ($transactions as $transaction)
                         <tr
-                            class="{{ $loop->iteration % 2 == 0 ? 'bg-white' : 'bg-white' }} text-center text-gray-800 text-xs font-normal uppercase tracking-wider hover:bg-yellow-200"
+                            class="{{ $loop->iteration % 2 == 0 ? 'bg-white' : 'bg-white' }} items-center justify-center text-center text-gray-800 text-xs font-normal uppercase tracking-wider hover:bg-yellow-200"
                         >
                             <td class="py-6">{{ $transaction->id }}</td>
                             <td class="py-6">{{ $transaction->date }}</td>
@@ -54,7 +54,13 @@
                                     <a
                                         href="{{ route('transaction.edit', $transaction) }}"
                                     >
-                                        <button class="btn px-3">EDIT</button>
+                                        <button
+                                            class="flex btn w-7 h-7 p-2 justify-center items-center"
+                                        >
+                                            <i
+                                                class="fa-solid fa-pen-to-square"
+                                            ></i>
+                                        </button>
                                     </a>
                                     <form
                                         action="{{ route('transaction.destroy', $transaction) }}"
@@ -65,10 +71,12 @@
                                         @method('DELETE')
                                         <button
                                             type="submit"
-                                            class="btn bg-red-400 px-2"
+                                            class="btn bg-red-400 p-2 w-7 h-7 justify-center items-center"
                                             onclick="return confirm('Are you sure you want to delete this transaction?')"
                                         >
-                                            DELETE
+                                            <i
+                                                class="fa-solid fa-trash-can"
+                                            ></i>
                                         </button>
                                     </form>
                                 </div>
