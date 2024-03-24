@@ -43,7 +43,10 @@
                                 <form action="{{ route('transaction.destroy', $transaction) }}" method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="bg-red-400 rounded p-1">Delete</button>
+                                    <button type="submit" class="bg-red-400 rounded p-1" 
+                                        onclick="return confirm('Are you sure you want to delete this transaction?')">
+                                        Delete
+                                    </button>
                                 </form>
                             
                             </div>
