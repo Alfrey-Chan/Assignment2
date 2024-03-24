@@ -17,6 +17,12 @@
             >
                 New Transaction
             </a>
+            <a 
+                href="{{ route('transaction.import') }}" 
+                class="btn"
+            >
+                Upload
+            </a>
         </div>
         <div class="text-center my-4 text-xl text-black font-bold">
             Transactions
