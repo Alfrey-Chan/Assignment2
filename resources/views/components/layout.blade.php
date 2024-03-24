@@ -33,7 +33,7 @@
                             <i
                                 class="fa-solid fa-money-check-dollar fa-2xl"
                             ></i>
-                            <span class="font-lg uppercase tracking-wider">
+                            <span class="uppercase tracking-wider font-bold">
                                 BusyBees
                             </span>
                         </a>

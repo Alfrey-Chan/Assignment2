@@ -3,7 +3,7 @@
 @endpush
 
 <x-layout>
-    <div class="flex flex-col w-full justify-center items-center font-bold">
+    <div class="flex flex-col w-full justify-center items-center">
         @if (session('success'))
             <div class="success">
                 {{ session('success') }}
@@ -13,12 +13,14 @@
         <div class="w-4/5 flex my-4">
             <a
                 href="{{ route('transaction.create') }}"
-                class="btn bg-yellow-200 py-2 px-4"
+                class="btn bg-yellow-200 py-2 px-4 font-bold"
             >
                 New Transaction
             </a>
         </div>
-        <div class="text-center my-4 text-xl text-black">Transactions</div>
+        <div class="text-center my-4 text-xl text-black font-bold">
+            Transactions
+        </div>
         <div class="flex justify-center w-full h-full rounded-lg my-4">
             <table
                 style="border-radius: 1rem; overflow: hidden"
