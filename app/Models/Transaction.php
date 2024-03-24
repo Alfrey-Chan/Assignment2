@@ -34,7 +34,7 @@ class Transaction extends Model
 
     // use HasFactory;
     public static function loadCsvData($filePath)
-    {   
+    {
         try {
             if (($handle = fopen($filePath, 'r')) !== false) {
                 // skip the first row (header row)
@@ -66,7 +66,7 @@ class Transaction extends Model
                 fclose($handle);
             }
         } catch (Exception $e) {
-            throw new Exception("Error processing CSV file.");
+            throw new Exception('Error processing CSV file.');
         }
     }
 

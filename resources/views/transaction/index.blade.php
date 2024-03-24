@@ -10,18 +10,18 @@
             </div>
         @endif
 
-        <div class="w-4/5 flex my-4">
+        <div class="w-3/5 flex my-4 gap-3">
             <a
                 href="{{ route('transaction.create') }}"
                 class="btn bg-yellow-200 py-2 px-4 font-bold"
             >
                 New Transaction
             </a>
-            <a 
-                href="{{ route('transaction.import') }}" 
-                class="btn"
+            <a
+                href="{{ route('transaction.import') }}"
+                class="btn bg-yellow-200 py-2 px-4 font-bold"
             >
-                Upload
+                Upload CSV
             </a>
         </div>
         <div class="text-center my-4 text-xl text-black font-bold">
@@ -33,7 +33,7 @@
                 class="w-4/5 md:w-3/4 lg:w-1/2 divide-y divide-gray-200 shadow-xl"
             >
                 <thead class="text-center bg-white">
-                    @for ($i = 1; $i <= 7; $i++)
+                    @for ($i = 0; $i < 7; $i++)
                         <th class="th">{{ $headers[$i] }}</th>
                     @endfor
 
@@ -49,10 +49,14 @@
                             <td class="py-6">{{ $transaction->vendor }}</td>
                             <td class="py-6">{{ $transaction->category }}</td>
                             <td class="py-6 mx-6">
-                                {{ $transaction->spend }}
+                                {{ $transaction->spend == 0 ? '-' : '$' . number_format($transaction->spend, 2) }}
                             </td>
-                            <td class="py-6">{{ $transaction->deposit }}</td>
-                            <td class="py-6">{{ $transaction->balance }}</td>
+                            <td class="py-6">
+                                {{ $transaction->deposit == 0 ? '-' : '$' . number_format($transaction->deposit, 2) }}
+                            </td>
+                            <td class="py-6">
+                                {{ '$' . number_format($transaction->balance, 2) }}
+                            </td>
                             <td class="md:px-6">
                                 <div
                                     class="flex gap-2 justify-center text-zinc-900"
@@ -73,8 +77,7 @@
                                         method="POST"
                                         class="delete-form"
                                     >
-                                        @csrf
-                                        @method('DELETE')
+                                        @csrf @method('DELETE')
                                         <button
                                             type="submit"
                                             class="btn bg-red-400 p-2 w-7 h-7 justify-center items-center"
