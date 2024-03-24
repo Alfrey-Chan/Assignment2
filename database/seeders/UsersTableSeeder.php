@@ -7,9 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UsersTableSeeder extends Seeder
-{   
-    
-
+{
     /**
      * Run the database seeds.
      */
@@ -18,7 +16,7 @@ class UsersTableSeeder extends Seeder
         User::create([
             'name' => config('admin.name'),
             'email' => config('admin.email'),
-            'password' => bcrypt(config('admin.password'))
+            'password' => bcrypt(config('admin.password')),
         ]);
     }
 }

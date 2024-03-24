@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use Symfony\Component\Console\Output\ConsoleOutput; // for debugging, outputs to terminal 
+use Symfony\Component\Console\Output\ConsoleOutput; // for debugging, outputs to terminal
 
 class TransactionController extends Controller
 {
@@ -13,16 +13,16 @@ class TransactionController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
         $transactions = Transaction::orderBy('date', 'desc')
-                                    ->orderBy('id', 'desc')
-                                    ->paginate(10);
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         $headers = Schema::getColumnListing('transactions');
-        
+
         return view('transaction.index', [
             'transactions' => $transactions,
-            'headers' => $headers
-            ])->with(request()->input('page'));
+            'headers' => $headers,
+        ])->with(request()->input('page'));
     }
 
     /**
@@ -37,7 +37,7 @@ class TransactionController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {   
+    {
         // validate function will redirect the user to previous location if any checks fail
         $validatedData = self::validateTransaction($request);
 
@@ -49,7 +49,9 @@ class TransactionController extends Controller
             return redirect()->back()->withErrors($e->getMessage());
         }
 
-        return redirect()->route('transaction.index')->with('success', 'Transaction added successfully.');
+        return redirect()
+            ->route('transaction.index')
+            ->with('success', 'Transaction added successfully.');
     }
 
     /**
@@ -72,7 +74,7 @@ class TransactionController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Transaction $transaction)
-    {   
+    {
         $validatedData = self::validateTransaction($request);
         try {
             // check for any negative balances before updating existing transaction
@@ -83,27 +85,32 @@ class TransactionController extends Controller
             return redirect()->back()->withErrors($e->getMessage());
         }
 
-        return redirect()->route('transaction.index')->with('success', 'Transaction updated successfully.');
+        return redirect()
+            ->route('transaction.index')
+            ->with('success', 'Transaction updated successfully.');
     }
 
     /**
-     * Remove the specified resource from storage. 
+     * Remove the specified resource from storage.
      */
     public function destroy(Transaction $transaction)
-    {   
+    {
         $transaction->delete();
         Transaction::updateSubsequentBalances();
- 
-        return redirect()->route('transaction.index')->with('success', 'Transaction deleted successfully.');
+
+        return redirect()
+            ->route('transaction.index')
+            ->with('success', 'Transaction deleted successfully.');
     }
 
-    private function validateTransaction(Request $request) {
-        return $request->validate([ 
+    private function validateTransaction(Request $request)
+    {
+        return $request->validate([
             'date' => 'required|date',
             'vendor' => 'required|string',
-            'spend' => 'nullable|numeric|min:0', 
+            'spend' => 'nullable|numeric|min:0',
             'deposit' => 'nullable|numeric|min:0',
-            'balance' => 'required|numeric'
+            'balance' => 'required|numeric',
         ]);
     }
 }

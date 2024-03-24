@@ -12,7 +12,7 @@ class TransactionsTableSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {   
+    {
         $sampleData = storage_path('app/csv/sample_data.csv');
         Transaction::loadCsvData($sampleData);
     }
