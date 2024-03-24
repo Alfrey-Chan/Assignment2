@@ -16,13 +16,14 @@
         <script src="https://kit.fontawesome.com/262aa8bad2.js" crossorigin="anonymous"></script>
     </head>
 
-    <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-        <header>
-            <nav>
+    <body class="font-sans antialiased dark:bg-black dark:text-white/50 bg-zinc-100">
+        <header >
+            <nav class="bg-yellow-300">
                 <ul>
                     <li>
                         <a class="logo" href={{ route('transaction.index') }}>
                             <i class="fa-solid fa-money-check-dollar fa-2xl"></i>
+                            <span class="font-lg uppercase tracking-wider">BusyBees</span>
                         </a>
                     </li>
                     <li>

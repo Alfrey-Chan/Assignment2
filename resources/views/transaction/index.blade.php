@@ -3,68 +3,70 @@
 @endpush
 
 <x-layout>
-    <div class="transaction-container">
+    <div class="flex flex-col w-full justify-center items-center font-bold">
 
         @if (session('success'))
             <div class="success">
                 {{ session('success') }}
             </div>
         @endif
+        <div class="w-4/5 flex my-4">
+            <a href="{{ route('transaction.create') }}" class="btn bg-yellow-200 py-2 px-4">
+                New Transaction
+            </a>
+        </div>
+        <div class="text-center my-4 text-xl text-black">
+            Transactions
+        </div>
+        <div class="flex justify-center w-full h-full rounded-lg my-4 ">
+            <table style="border-radius: 1rem; overflow:hidden;" class="w-4/5 md:w-3/4 lg:w-1/2 divide-y divide-gray-200 shadow-xl  ">
+                <thead class="text-center bg-white">
 
-        <a href="{{ route('transaction.create') }}" class="btn ">
-            New Transaction
-        </a>
-        <div class="flex justify-center">
-            <table class="content-table">
-                <thead>
-                    <th>{{ $headers[0] }}</th> {{-- id --}}
-                    <th>{{ $headers[1] }}</th> {{-- date --}}
-                    <th>{{ $headers[2] }}</th> {{-- vendor --}}
-                    <th>{{ $headers[3] }}</th> {{-- category --}}
-                    <th>{{ $headers[4] }}</th> {{-- spend --}}
-                    <th>{{ $headers[5] }}</th> {{-- deposit --}}
-                    <th>{{ $headers[6] }}</th> {{-- balance --}}
-                    <th>Actions</th>
+                    @for ($i = 1; $i <= 7; $i++)
+                        <th class="th">{{ $headers[$i] }}</th>
+                    @endfor
+                    <th class="th">Actions</th>
                 </thead>
                 <tbody>
-                    @foreach ($transactions as $transaction)  
-                    <tr>
-                        <td>{{ $transaction->id }}</td>
-                        <td>{{ $transaction->date }}</td>
-                        <td>{{ $transaction->vendor }}</td> 
-                        <td>{{ $transaction->category }}</td>
-                        <td>{{ $transaction->spend }}</td>
-                        <td>{{ $transaction->deposit }}</td>
-                        <td>{{ $transaction->balance }}</td>
-                        <td>
-                            <div class="flex gap-2">
-                                <a href="{{ route('transaction.show', $transaction) }}" ><button class="btn bg-green-300 px-2">View</button></a>
-                                <a href="{{ route('transaction.edit', $transaction) }}"><button class="btn bg-blue-400 px-3">Edit</button></a>
-                                                                <form action="{{ route('transaction.destroy', $transaction) }}" method="POST" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn bg-red-400 px-1">Delete</button>
-                                </form>
-                            
-                            </div>
-                        </td>
-                    </tr>
+                    @foreach ($transactions as $transaction)
+                        <tr
+                            class="{{ $loop->iteration % 2 == 0 ? 'bg-white' : 'bg-white' }} text-center text-gray-800 text-xs font-normal uppercase tracking-wider hover:bg-yellow-200">
+                            <td class="py-6">{{ $transaction->id }}</td>
+                            <td class="py-6">{{ $transaction->date }}</td>
+                            <td class="py-6">{{ $transaction->vendor }}</td>
+                            <td class="py-6">{{ $transaction->category }}</td>
+                            <td class="py-6 mx-6">{{ $transaction->spend }}</td>
+                            <td class="py-6">{{ $transaction->deposit }}</td>
+                            <td class="py-6">{{ $transaction->balance }}</td>
+                            <td class="md:px-6">
+                                <div class="flex gap-2 justify-center text-zinc-900">
+                                    <a href="{{ route('transaction.show', $transaction) }}"><button
+                                            class="btn bg-green-300 px-3">VIEW</button></a>
+                                    <a href="{{ route('transaction.edit', $transaction) }}"><button
+                                            class="btn bg-blue-400 px-3">EDIT</button></a>
+                                    <form action="{{ route('transaction.destroy', $transaction) }}" method="POST"
+                                        class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn bg-red-600 px-2">DELETE</button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
-
-           
-
         </div>
 
-         <div class="flex justify-center w-full">
-                {{ $transactions->links() }}
-            </div>
+
+
+    <div class="flex justify-center w-full my-4">
+        {{ $transactions->links() }}
     </div>
-    
+    </div>
+
     @push('scripts')
         @vite('resources/js/index.js')
     @endpush
 </x-layout>
-
-
