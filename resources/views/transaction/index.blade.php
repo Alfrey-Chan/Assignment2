@@ -11,10 +11,10 @@
             </div>
         @endif
 
-        <a href="{{ route('transaction.create') }}" class="new-transaction-btn">
+        <a href="{{ route('transaction.create') }}" class="btn ">
             New Transaction
         </a>
-        <div class="transactions">
+        <div class="flex justify-center">
             <table class="content-table">
                 <thead>
                     <th>{{ $headers[0] }}</th> {{-- id --}}
@@ -38,12 +38,12 @@
                         <td>{{ $transaction->balance }}</td>
                         <td>
                             <div class="flex gap-2">
-                                <a href="{{ route('transaction.show', $transaction) }}" ><button class="bg-green-300 rounded py-1 px-2">View</button></a>
-                                <a href="{{ route('transaction.edit', $transaction) }}"><button class="bg-blue-400 rounded px-3  py-1">Edit</button></a>
+                                <a href="{{ route('transaction.show', $transaction) }}" ><button class="btn bg-green-300 px-2">View</button></a>
+                                <a href="{{ route('transaction.edit', $transaction) }}"><button class="btn bg-blue-400 px-3">Edit</button></a>
                                                                 <form action="{{ route('transaction.destroy', $transaction) }}" method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="bg-red-400 rounded p-1">Delete</button>
+                                    <button type="submit" class="btn bg-red-400 px-1">Delete</button>
                                 </form>
                             
                             </div>
@@ -53,11 +53,13 @@
                 </tbody>
             </table>
 
-            <div class="pagination-container">
-                {{ $transactions->links() }}
-            </div>
+           
 
         </div>
+
+         <div class="flex justify-center w-full">
+                {{ $transactions->links() }}
+            </div>
     </div>
     
     @push('scripts')

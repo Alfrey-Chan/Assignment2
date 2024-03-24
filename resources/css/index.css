@@ -59,3 +59,7 @@
     display: flex;
     justify-content: center;
 }
+
+.btn {
+    @apply bg-green-300 rounded p-1 transform hover:scale-110;
+}
