@@ -10,18 +10,18 @@
             </div>
         @endif
 
-        <div class="w-4/5 flex my-4">
+        <div class="w-3/5 flex my-4 gap-3">
             <a
                 href="{{ route('transaction.create') }}"
                 class="btn bg-yellow-200 py-2 px-4 font-bold"
             >
                 New Transaction
             </a>
-            <a 
-                href="{{ route('transaction.import') }}" 
-                class="btn"
+            <a
+                href="{{ route('transaction.import') }}"
+                class="btn bg-yellow-200 py-2 px-4 font-bold"
             >
-                Upload
+                Upload CSV
             </a>
         </div>
         <div class="text-center my-4 text-xl text-black font-bold">

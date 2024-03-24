@@ -75,12 +75,24 @@
                         class="{{ $formInput }} col-span-3"
                     />
                 </div>
-                <button
-                    class="rounded-md p-1 px-2 transform hover:scale-110 shadow-md bg-yellow-200"
-                    type="button"
-                >
-                    <input class="font-bold" type="submit" value="Submit" />
-                </button>
+
+                <div class="grid grid-cols-4 items-center gap-3 font-bold">
+                    <button
+                        type="button"
+                        class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-2 col-span-1 text-gray-600"
+                    >
+                        <a href="/transaction">
+                            <i class="fa-solid fa-left-long fa-l"></i>
+                            BACK
+                        </a>
+                    </button>
+                    <button
+                        class="rounded-md p-1 px-2 transform hover:scale-110 shadow-md bg-yellow-300 col-span-1"
+                        type="button"
+                    >
+                        <input class="font-bold" type="submit" value="Submit" />
+                    </button>
+                </div>
             </div>
         </div>
     </form>

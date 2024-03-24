@@ -122,18 +122,23 @@ class TransactionController extends Controller
     }
 
     public function importFromCsv(Request $request)
-    {   
+    {
         $request->validate([
-            'csvFile' => 'required|file|mimes:csv,txt'
+            'csvFile' => 'required|file|mimes:csv,txt',
         ]);
 
         try {
             $tempFilePath = $request->file('csvFile')->store('temp');
-            $originalFileName = $request->file('csvFile')->getClientOriginalName();
-            $importedFileName = pathinfo($originalFileName, PATHINFO_FILENAME) . '.imported' . '.' . pathinfo($originalFileName, PATHINFO_EXTENSION);
-    
+            $originalFileName = $request
+                ->file('csvFile')
+                ->getClientOriginalName();
+            $importedFileName =
+                pathinfo($originalFileName, PATHINFO_FILENAME) .
+                '.imported' .
+                '.' .
+                pathinfo($originalFileName, PATHINFO_EXTENSION);
 
-            Transaction::loadCsvData(storage_path('app/'.$tempFilePath));
+            Transaction::loadCsvData(storage_path('app/' . $tempFilePath));
             // Transaction::storeImportedFile($tempFilePath);
             $newPath = 'imports/' . $importedFileName;
             Storage::move($tempFilePath, $newPath);
