@@ -39,23 +39,24 @@ class TransactionController extends Controller
     public function store(Request $request)
     {   
         // validate function will redirect the user to previous location if any checks fail
-        $validatedData = $request->validate([ 
-            'date' => 'required|date',
-            'vendor' => 'required|string',
-            'spend' => 'nullable|numeric',
-            'deposit' => 'nullable|numeric',
-            'balance' => 'required|numeric'
-        ]);
+        $validatedData = self::validateTransaction($request);
+        // $validatedData = $request->validate([ 
+        //     'date' => 'required|date',
+        //     'vendor' => 'required|string',
+        //     'spend' => 'nullable|numeric',
+        //     'deposit' => 'nullable|numeric',
+        //     'balance' => 'required|numeric'
+        // ]);
 
         // $output = new ConsoleOutput();
         // $output->writeln('validatedData: ' . print_r($validatedData, true));
 
         try {
             // check for any negative balances before creating new transaction
-            if (!Transaction::checkNegativeBalances($validatedData)) {
-                return redirect()->back()->withErrors('Transaction failed. Balance cannot be less than 0.');
-            }
-
+            // if (!Transaction::checkNegativeBalances($validatedData)) {
+            //     return redirect()->back()->withErrors('Transaction failed. Subsequent tranction balance(s) resulted in less than 0');
+            // }
+            Transaction::checkNegativeBalances($validatedData);
             $transaction = Transaction::createNewTransaction($validatedData);
             Transaction::updateSubsequentBalances($transaction);
         } catch (\Exception $e) {
@@ -85,8 +86,21 @@ class TransactionController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Transaction $transaction)
-    {
-        return 'update';
+    {   
+        $validatedData = self::validateTransaction($request);
+        try {
+            // check for any negative balances before updating existing transaction
+            Transaction::checkNegativeBalances($validatedData);
+            $updatedTransaction = Transaction::updateTransaction($transaction, $request);
+            $output = new ConsoleOutput();
+            $output->writeln('data: ' . print_r($updatedTransaction, true));
+
+            Transaction::updateSubsequentBalances($updatedTransaction);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->route('transaction.index')->with('success', 'Transaction updated successfully.');
     }
 
     /**
@@ -95,5 +109,15 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         return 'destroy';
+    }
+
+    private function validateTransaction(Request $request) {
+        return $request->validate([ 
+            'date' => 'required|date',
+            'vendor' => 'required|string',
+            'spend' => 'nullable|numeric|min:0', // TODO: cannot be negative check 
+            'deposit' => 'nullable|numeric|min:0',
+            'balance' => 'required|numeric'
+        ]);
     }
 }
