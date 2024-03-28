@@ -4,6 +4,17 @@
 
 <x-layout>
     <div class="flex flex-col w-full justify-center items-center">
+        <div class="flex flex-col items-center mb-4">
+            @if ($errors->any())
+                <div class="error-messages text-red-400">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
         @if (session('success'))
             <div class="success text-green-500">
                 {{ session('success') }}

@@ -28,7 +28,7 @@ class BucketController extends Controller
      */
     public function create()
     {
-        return view("bucket.create");
+        return view('bucket.create');
     }
 
     /**
@@ -97,7 +97,7 @@ class BucketController extends Controller
     }
 
     private function validateBucket(Request $request)
-    {   
+    {
         return $request->validate([
             'vendor' => 'required|string',
             'category' => ['required', 'string', new UniqueVendorCategory()],

@@ -36,7 +36,7 @@
                     <a href="/" class="col-start-2 col-span-1">
                         <button
                             type="button"
-                            class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md  text-gray-600"
+                            class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md text-gray-600"
                         >
                             <i class="fa-solid fa-left-long fa-l"></i>
                             BACK
@@ -54,4 +54,3 @@
         </div>
     </form>
 </x-layout>
-

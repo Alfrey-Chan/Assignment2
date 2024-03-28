@@ -28,10 +28,8 @@ class Bucket extends Model
         return $bucket;
     }
 
-    public static function updateBucket(
-        Bucket $bucket,
-        Request $request
-    ) {
+    public static function updateBucket(Bucket $bucket, Request $request)
+    {
         $bucket->vendor = $request->vendor;
         $bucket->category = $request->category;
 
