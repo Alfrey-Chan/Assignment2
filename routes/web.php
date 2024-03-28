@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Bucket;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BucketController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UsersController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -26,3 +26,9 @@ Route::post('transaction/import', [
 Route::resource('transaction', TransactionController::class);
 
 Route::resource('bucket', BucketController::class);
+
+Route::get('/login', [UsersController::class, 'login'])->name('login');
+Route::post('/login', [UsersController::class, 'authenticate']);
+Route::get('/register', [UsersController::class, 'create'])->name('register');
+Route::post('/register', [UsersController::class, 'store']);
+Route::post('/', [UsersController::class, 'logout'])->name('logout');
