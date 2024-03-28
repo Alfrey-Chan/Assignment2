@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Console\Output\ConsoleOutput; // for debugging, outputs to terminal
 
 class TransactionController extends Controller
@@ -112,5 +114,41 @@ class TransactionController extends Controller
             'deposit' => 'nullable|numeric|min:0',
             'balance' => 'required|numeric',
         ]);
+    }
+
+    public function showImportForm()
+    {
+        return view('transaction.import');
+    }
+
+    public function importFromCsv(Request $request)
+    {
+        $request->validate([
+            'csvFile' => 'required|file|mimes:csv,txt',
+        ]);
+
+        try {
+            $tempFilePath = $request->file('csvFile')->store('temp');
+            $originalFileName = $request
+                ->file('csvFile')
+                ->getClientOriginalName();
+            $importedFileName =
+                pathinfo($originalFileName, PATHINFO_FILENAME) .
+                '.imported' .
+                '.' .
+                pathinfo($originalFileName, PATHINFO_EXTENSION);
+
+            Transaction::loadCsvData(storage_path('app/' . $tempFilePath));
+            // Transaction::storeImportedFile($tempFilePath);
+            $newPath = 'imports/' . $importedFileName;
+            Storage::move($tempFilePath, $newPath);
+        } catch (\Exception $e) {
+            Log::error('Error' . $e->getMessage());
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()
+            ->route('transaction.index')
+            ->with('success', 'CSV file uploaded successfully.');
     }
 }

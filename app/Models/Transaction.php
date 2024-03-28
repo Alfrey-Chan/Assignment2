@@ -64,25 +64,23 @@ class Transaction extends Model
                     $transaction->save();
                 }
                 fclose($handle);
-
-                Transaction::storeImportedFile($filePath);
             }
         } catch (Exception $e) {
-            Log::error('Error loading csv data: ' . $e);
+            throw new Exception('Error processing CSV file.');
         }
     }
 
-    private static function storeImportedFile($filePath)
-    {
-        $fileName = basename($filePath);
-        $newFileName = $fileName . '.imported';
-        // storage_path generates the full path to the storage directory, and appends whatever you pass as an argument to it
-        $newFilePath = storage_path('imports/' . $newFileName);
+    // public static function storeImportedFile($filePath)
+    // {
+    //     $fileName = basename($filePath);
+    //     $newFileName = $fileName . '.imported';
+    //     // storage_path generates the full path to the storage directory, and appends whatever you pass as an argument to it
+    //     $newFilePath = storage_path('imports/' . $newFileName);
 
-        if (!copy($filePath, $newFilePath)) {
-            throw new Exception("Failed to move and rename file: $filePath");
-        }
-    }
+    //     if (!copy($filePath, $newFilePath)) {
+    //         throw new Exception("Failed to move and rename file: $filePath");
+    //     }
+    // }
 
     public static function createNewTransaction($data)
     {
