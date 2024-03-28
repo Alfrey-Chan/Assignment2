@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\TransactionController;
+use App\Models\Bucket;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BucketController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\TransactionController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -14,6 +16,7 @@ Route::get('transaction/import', [
     TransactionController::class,
     'showImportForm',
 ])->name('transaction.import');
+
 Route::post('transaction/import', [
     TransactionController::class,
     'importFromCsv',
@@ -21,3 +24,5 @@ Route::post('transaction/import', [
 
 // resource method generates several common routes used for Restful controllers
 Route::resource('transaction', TransactionController::class);
+
+Route::resource('bucket', BucketController::class);
