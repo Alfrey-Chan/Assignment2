@@ -7,15 +7,38 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::orderBy('name', 'asc')->paginate(5);
-        return view('users.index', ['users' => $users]);
+        $buttons = [
+            [
+                'href' => route('transaction.create'),
+                'text' => 'New Transaction',
+                'adminOnly' => false,
+            ],
+            [
+                'href' => route('transaction.import'),
+                'text' => 'Upload CSV',
+                'adminOnly' => false,
+            ],
+            [
+                'href' => route('bucket.index'),
+                'text' => 'View Buckets',
+                'adminOnly' => true,
+            ],
+        ];
+        $adminEmail = config('admin.email');
+        $users = User::where('email', '!=', $adminEmail)
+            ->orderBy('created_at', 'asc')
+            ->paginate(5);
+        return view('users.approval', [
+            'users' => $users,
+            'buttons' => $buttons,
+        ]);
     }
 
     /**
@@ -41,11 +64,14 @@ class UsersController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->approved = false;
         $user->save();
+        session()->flash(
+            'message',
+            'Please wait until the administrator approves your registration.'
+        );
 
-        Auth::login($user);
-
-        return redirect()->route('transaction.index');
+        return redirect()->route('welcome');
     }
 
     /**
@@ -85,7 +111,9 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index');
+        return redirect()
+            ->route('users.approve')
+            ->with('success', 'User removed successfully.');
     }
 
     public function login()
@@ -110,5 +138,14 @@ class UsersController extends Controller
     {
         Auth::logout();
         return redirect()->route('welcome');
+    }
+
+    public function approve($id)
+    {
+        $user = User::findOrFail($id);
+        $user->approved = true;
+        $user->save();
+
+        return redirect()->route('approvals');
     }
 }

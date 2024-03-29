@@ -32,6 +32,11 @@ class TransactionController extends Controller
                 'text' => 'View Buckets',
                 'adminOnly' => true,
             ],
+            [
+                'href' => route('approvals'),
+                'text' => 'Approve Users',
+                'adminOnly' => true,
+            ],
         ];
         $transactions = Transaction::orderBy('date', 'desc')
             ->orderBy('id', 'desc')

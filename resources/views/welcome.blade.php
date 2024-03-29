@@ -5,6 +5,12 @@
         </h1>
         <!DOCTYPE html>
 
+        @if (session('message'))
+            <div class="success text-green-500">
+                {{ session('message') }}
+            </div>
+        @endif
+
         <div class="flex flex-col gap-2 items-center">
             <div
                 class="rounded p-4 my-7 text-xs font-normal uppercase tracking-wider"
