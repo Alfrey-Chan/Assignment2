@@ -1,3 +1,7 @@
+@push('styles')
+    @vite('resources/css/index.css')
+@endpush
+
 <x-layout>
     <div class="flex flex-col w-full justify-center items-center">
         @if (session('success'))
@@ -6,27 +10,25 @@
             </div>
         @endif
 
-        <div class="w-3/5 flex my-4 gap-3">
+        <div class="flex justify-center my-4 gap-3">
             <a
                 href="{{ route('transaction.index') }}"
                 class="btn bg-yellow-200 py-2 px-4 font-bold"
             >
-                Back
+                Back to Transactions
             </a>
             <a
                 href="{{ route('bucket.create') }}"
-                class="btn bg-yellow-200 py-2 px-4 font-bold"
+                class="btn bg-yellow-200 py-2 px-4 font-bold rounded"
             >
                 New Bucket
             </a>
         </div>
-        <div class="text-center my-4 text-xl text-black font-bold">
-            Transactions
-        </div>
+        <div class="text-center my-4 text-xl text-black font-bold">Buckets</div>
         <div class="flex justify-center w-full h-full rounded-lg my-4">
             <table
                 style="border-radius: 1rem; overflow: hidden"
-                class="w-4/5 md:w-3/4 lg:w-1/2 divide-y divide-gray-200 shadow-xl"
+                class="min-w-4/5 md:min-w-3/4 lg:w-1/2 divide-y divide-gray-200 shadow-xl"
             >
                 <thead class="text-center bg-white">
                     @for ($i = 0; $i < 3; $i++)

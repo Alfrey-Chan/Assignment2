@@ -88,10 +88,10 @@
                     </a>
 
                     <button
-                        class="rounded-md p-1 col-start-3 col-span-1 transform hover:scale-110 shadow-md bg-yellow-300"
+                        class="rounded-md p-1 col-start-3 col-span-1 transform hover:scale-110 hover:cursor-pointer shadow-md bg-yellow-300"
                         type="button"
                     >
-                        <input class="font-bold" type="submit" value="Submit" />
+                        <input class="font-bold" type="submit" value="Create" />
                     </button>
                 </div>
             </div>

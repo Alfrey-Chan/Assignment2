@@ -5,7 +5,9 @@
             'block flex-1 border rounded bg-white px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 hover:cursor-pointer';
     @endphp
 
-    <div class="text-center my-4 text-xl text-white font-bold">New Bucket</div>
+    <div class="text-center my-4 text-xl text-black dark:text-white font-bold">
+        New Bucket
+    </div>
 
     <form action="{{ route('bucket.store') }}" method="POST">
         @csrf
@@ -44,22 +46,21 @@
                         class="{{ $formInput }} col-span-3"
                     />
                 </div>
-                <div class="grid grid-cols-4 items-center gap-3 font-bold">
+                <div class="grid grid-cols-3 font-bold w-full">
                     <button
                         type="button"
-                        class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-2 col-span-1 text-gray-600"
+                        class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-1 col-span-1 text-gray-600"
                     >
                         <a href="/bucket">
                             <i class="fa-solid fa-left-long fa-l"></i>
-                            BACK
+                            Back
                         </a>
                     </button>
-                    <button
-                        class="rounded-md p-1 px-2 transform hover:scale-110 shadow-md bg-yellow-300 col-span-1"
-                        type="button"
-                    >
-                        <input class="font-bold" type="submit" value="Submit" />
-                    </button>
+                    <input
+                        class="font-bold rounded-md p-1 px-2 transform hover:scale-110 shadow-md bg-yellow-300 col-start-3 col-span-1"
+                        type="submit"
+                        value="Submit"
+                    />
                 </div>
             </div>
         </div>

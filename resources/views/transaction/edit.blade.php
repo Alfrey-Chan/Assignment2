@@ -101,7 +101,7 @@
                     />
                 </div>
 
-                <div class="grid grid-cols-4 items-center gap-3 font-bold">
+                <div class="grid grid-cols-3 font-bold w-full">
                     <button
                         type="button"
                         class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-1 col-span-1 text-gray-600"
@@ -113,7 +113,7 @@
                     </button>
                     <button
                         type="button"
-                        class="bg-yellow-300 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-span-1"
+                        class="bg-yellow-300 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-3 col-span-1"
                     >
                         <input type="submit" value="SAVE" />
                     </button>
