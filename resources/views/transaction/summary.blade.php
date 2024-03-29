@@ -28,12 +28,13 @@
         <div class="text-center my-4 text-xl text-black font-bold">Summary</div>
         <form method="GET" action="{{ route('transaction.summary') }}">
             <div class="flex w-full items-center justify-center gap-3">
-                <label for="year" class="text-gray-900">Year</label>
+                <label for="year" class="text-gray-900">Year:</label>
                 <input
                     type="number"
                     name="year"
                     id="year"
-                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded py-2"
+                    value="{{ request('year') }}"
+                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded p-2"
                     placeholder="Enter year"
                 />
                 <button
@@ -44,6 +45,12 @@
                 </button>
             </div>
         </form>
+
+         @if ($summary->count() == 0)
+            <div class="text-center text-gray-800 m-4">
+                No data available for the selected year.
+            </div>
+        @else
         <div class="flex justify-center w-full h-full rounded-lg my-4">
             <table
                 style="border-radius: 1rem; overflow: hidden"
@@ -83,21 +90,28 @@
                 </tbody>
             </table>
         </div>
-        <canvas id="chartContainer" class="w-full h-64"></canvas>
+       
+                <div
+                    id="chartContainer"
+                    style="height: 370px; width: 100%"
+                ></div>
+        @endif
     </div>
 
+    @php
+        $dataPoints = [];
+        foreach ($summary as $item) {
+            $dataPoints[] = ['label' => $item->category, 'y' => $item->total_spend];
+        }
+        $year = request('year') ?? date('Y');
+    @endphp
+
     @push('scripts')
-    <script>
-    var dataPoints = [
-        { label: "Food", y: 500 },
-        { label: "Rent", y: 1000 },
-        { label: "Utilities", y: 200 },
-        { label: "Entertainment", y: 300 },
-        { label: "Transportation", y: 150 }
-    ];
-    
-</script>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script>
+            var year = @json($year);
+            var dataPoints = @json($dataPoints);
+        </script>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         @vite('resources/js/chart.js')
     @endpush
 </x-layout>
