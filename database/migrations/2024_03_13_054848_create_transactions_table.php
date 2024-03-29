@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->float('spend')->nullable();
             $table->float('deposit')->nullable();
             $table->float('balance');
+            $table->string('user_id');
             $table->timestamps();
         });
     }

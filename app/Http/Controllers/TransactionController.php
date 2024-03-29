@@ -28,6 +28,11 @@ class TransactionController extends Controller
                 'adminOnly' => false,
             ],
             [
+                'href' => route('transaction.summary'),
+                'text' => 'Summary',
+                'adminOnly' => false,
+            ],
+            [
                 'href' => route('bucket.index'),
                 'text' => 'View Buckets',
                 'adminOnly' => true,
@@ -39,6 +44,7 @@ class TransactionController extends Controller
             ],
         ];
         $transactions = Transaction::orderBy('date', 'desc')
+            ->where('user_id', auth()->user()->id)
             ->orderBy('id', 'desc')
             ->paginate(10);
         $headers = Schema::getColumnListing('transactions');
@@ -136,6 +142,7 @@ class TransactionController extends Controller
             'spend' => 'nullable|numeric|min:0',
             'deposit' => 'nullable|numeric|min:0',
             'balance' => 'required|numeric',
+            'user_id' => 'required|string',
         ]);
     }
 
@@ -173,5 +180,39 @@ class TransactionController extends Controller
         return redirect()
             ->route('transaction.index')
             ->with('success', 'CSV file uploaded successfully.');
+    }
+
+    public function summary(Request $request)
+    {
+        $buttons = [
+            [
+                'href' => route('transaction.index'),
+                'text' => 'Transactions',
+                'adminOnly' => false,
+            ],
+            [
+                'href' => route('transaction.import'),
+                'text' => 'Upload CSV',
+                'adminOnly' => false,
+            ],
+            [
+                'href' => route('bucket.index'),
+                'text' => 'View Buckets',
+                'adminOnly' => true,
+            ],
+            [
+                'href' => route('approvals'),
+                'text' => 'Approve Users',
+                'adminOnly' => true,
+            ],
+        ];
+        $year = $request->get('year');
+        $summary = Transaction::getSummary($year);
+        $headers = Schema::getColumnListing('transactions');
+        return view('transaction.summary', compact('summary'), [
+            'summary' => $summary,
+            'buttons' => $buttons,
+            'headers' => $headers,
+        ]);
     }
 }

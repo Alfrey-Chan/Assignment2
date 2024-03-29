@@ -25,6 +25,10 @@ Route::middleware(['auth', EnsureUserIsApproved::class])->group(function () {
         TransactionController::class,
         'importFromCsv',
     ])->name('transaction.import.csv');
+    Route::get('transaction/summary', [
+        TransactionController::class,
+        'summary',
+    ])->name('transaction.summary');
 
     // resource method generates several common routes used for Restful controllers
     Route::resource('transaction', TransactionController::class);

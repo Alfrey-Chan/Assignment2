@@ -21,7 +21,7 @@
     <form action="{{ route('login') }}" method="POST">
         @csrf
         <div class="flex justify-center">
-            <div class="flex flex-col items-center w-1/3 gap-4">
+            <div class="flex flex-col items-center w-1/2 gap-4">
                 <div class="grid grid-cols-4 items-center gap-2">
                     <label class="{{ $formLabel }}" for="email">Email:</label>
                     <input

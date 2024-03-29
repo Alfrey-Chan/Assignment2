@@ -5,7 +5,7 @@ namespace App\Models;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Prompts\Output\ConsoleOutput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +30,7 @@ class Transaction extends Model
         'spend',
         'deposit',
         'balance',
+        'user_id',
     ];
 
     // use HasFactory;
@@ -60,6 +61,7 @@ class Transaction extends Model
                         'spend' => $row[2] ? $row[2] : 0, // if no spend value, set to 0
                         'deposit' => $row[3] ? $row[3] : 0, // if no deposit value, set to 0
                         'balance' => $row[4],
+                        'user_id' => auth()->id(),
                     ]);
                     $transaction->save();
                 }
@@ -105,6 +107,7 @@ class Transaction extends Model
             'spend' => $spend,
             'deposit' => $deposit,
             'balance' => $balance,
+            'user_id' => auth()->id(),
         ]);
         $transaction->save();
 
@@ -189,9 +192,29 @@ class Transaction extends Model
         $transaction->spend = $request->spend;
         $transaction->deposit = $request->deposit;
         $transaction->balance = $request->balance;
+        $transaction->category = Transaction::mapCategory($request->vendor);
+        $transaction->user_id = auth()->id();
 
         $transaction->save();
 
         return $transaction;
+    }
+
+    public static function getSummary($year = null)
+    {
+        if ($year === null) {
+            $year = date('Y');
+        }
+        $query = self::select(
+            'category',
+            DB::raw('SUM(spend) as total_spend'),
+            DB::raw('SUM(deposit) as total_deposit')
+        )->groupBy('category');
+
+        if ($year) {
+            $query->whereYear('date', $year);
+        }
+
+        return $query->get();
     }
 }
