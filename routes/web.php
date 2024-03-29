@@ -2,16 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BucketController;
-use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UsersController;
 use App\Http\Middleware\EnsureIsAdmin;
-
+use Illuminate\Support\Facades\Auth;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
-Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
+Route::get('/', [AppController::class, 'welcome'])->name('welcome');
+Route::fallback([AppController::class, 'notFound']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('transaction/import', [

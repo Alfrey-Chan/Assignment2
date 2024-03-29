@@ -6,6 +6,17 @@
     @endphp
 
     <div class="text-center my-4 text-xl text-black font-bold">Login</div>
+    <div class="flex flex-col items-center mb-4">
+        @if ($errors->any())
+            <div class="error-messages text-red-400">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    </div>
 
     <form action="{{ route('login') }}" method="POST">
         @csrf
@@ -39,7 +50,7 @@
                             class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md text-gray-600"
                         >
                             <i class="fa-solid fa-left-long fa-l"></i>
-                            BACK
+                            Back
                         </button>
                     </a>
 
