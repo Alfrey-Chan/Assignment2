@@ -76,21 +76,22 @@
                     />
                 </div>
 
-                <div class="grid grid-cols-4 items-center gap-3 font-bold">
-                    <button
-                        type="button"
-                        class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-2 col-span-1 text-gray-600"
-                    >
-                        <a href="/transaction">
+                <div class="grid grid-cols-3 font-bold w-full">
+                    <a class="w-full" href="/transaction">
+                        <button
+                            type="button"
+                            class="w-full bg-yellow-200 rounded-md col-start-1 col-span-1 py-1 transform hover:scale-110 shadow-md text-gray-600"
+                        >
                             <i class="fa-solid fa-left-long fa-l"></i>
-                            BACK
-                        </a>
-                    </button>
+                            Back
+                        </button>
+                    </a>
+
                     <button
-                        class="rounded-md p-1 px-2 transform hover:scale-110 shadow-md bg-yellow-300 col-span-1"
+                        class="rounded-md p-1 col-start-3 col-span-1 transform hover:scale-110 hover:cursor-pointer shadow-md bg-yellow-300"
                         type="button"
                     >
-                        <input class="font-bold" type="submit" value="Submit" />
+                        <input class="font-bold" type="submit" value="Create" />
                     </button>
                 </div>
             </div>

@@ -4,32 +4,27 @@
 
 <x-layout>
     <div class="flex flex-col w-full justify-center items-center">
+        <div class="flex flex-col items-center mb-4">
+            @if ($errors->any())
+                <div class="error-messages text-red-400">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
         @if (session('success'))
             <div class="success text-green-500">
                 {{ session('success') }}
             </div>
         @endif
 
-        <div class="w-3/5 flex my-4 gap-3">
-            <a
-                href="{{ route('transaction.create') }}"
-                class="btn bg-yellow-200 py-2 px-4 font-bold"
-            >
-                New Transaction
-            </a>
-            <a
-                href="{{ route('transaction.import') }}"
-                class="btn bg-yellow-200 py-2 px-4 font-bold"
-            >
-                Upload CSV
-            </a>
-            <a
-                href="{{ route('bucket.index') }}"
-                class="btn bg-yellow-200 py-2 px-4 font-bold"
-            >
-                View Buckets
-            </a>
-        </div>
+        <x-functions
+            :buttons="$buttons"
+            :isAdmin="auth()->user() && auth()->user()->isAdmin()"
+        />
         <div class="text-center my-4 text-xl text-black font-bold">
             Transactions
         </div>

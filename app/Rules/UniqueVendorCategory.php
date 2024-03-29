@@ -14,17 +14,22 @@ class UniqueVendorCategory implements ValidationRule
      *
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
-    {
+    public function validate(
+        string $attribute,
+        mixed $value,
+        Closure $fail
+    ): void {
         $vendor = Request::get('vendor');
         $category = Request::get('category');
 
         $exists = Bucket::where('vendor', $vendor)
-                        ->where('category', $category)
-                        ->exists();
+            ->where('category', $category)
+            ->exists();
 
         if ($exists) {
-            $fail('The :attribute is already paired with a category.')->translate();
+            $fail(
+                'The :attribute is already paired with a category.'
+            )->translate();
         }
     }
 }

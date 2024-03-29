@@ -39,14 +39,17 @@
                         </a>
                     </li>
                     <li>
-                        <a
-                            class="login-logout"
-                            href="#"
-                            onmouseover="this.children[0].classList.replace('fa-door-closed', 'fa-door-open')"
-                            onmouseout="this.children[0].classList.replace('fa-door-open', 'fa-door-closed')"
-                        >
-                            <i class="fa-solid fa-door-closed fa-2xl"></i>
-                        </a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button
+                                type="submit"
+                                class="login-logout"
+                                onmouseover="this.children[0].classList.replace('fa-door-closed', 'fa-door-open')"
+                                onmouseout="this.children[0].classList.replace('fa-door-open', 'fa-door-closed')"
+                            >
+                                <i class="fa-solid fa-door-closed fa-2xl"></i>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </nav>

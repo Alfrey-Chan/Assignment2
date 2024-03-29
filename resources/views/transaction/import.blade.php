@@ -35,19 +35,19 @@
                     />
                 </div>
                 <div class="grid grid-cols-2 items-center gap-3 font-bold">
-                    <button
-                        type="button"
-                        class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-span-1 text-gray-600"
-                    >
-                        <a href="{{ route('transaction.index') }}" class="btn">
+                    <a href="{{ route('transaction.index') }}" class="btn">
+                        <button
+                            type="button"
+                            class="bg-yellow-200 rounded-md py-1 px-3 transform hover:scale-110 shadow-md col-span-1 text-gray-600"
+                        >
                             <i class="fa-solid fa-left-long fa-l"></i>
                             Back
-                        </a>
-                    </button>
+                        </button>
+                    </a>
 
                     <button
                         type="button"
-                        class="bg-yellow-300 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-span-1"
+                        class="bg-yellow-300 rounded-md py-1 px-3 transform hover:scale-110 shadow-md col-span-1"
                     >
                         <input type="submit" value="Upload" name="submit" />
                     </button>

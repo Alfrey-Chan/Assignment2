@@ -16,6 +16,28 @@ class TransactionController extends Controller
      */
     public function index()
     {
+        $buttons = [
+            [
+                'href' => route('transaction.create'),
+                'text' => 'New Transaction',
+                'adminOnly' => false,
+            ],
+            [
+                'href' => route('transaction.import'),
+                'text' => 'Upload CSV',
+                'adminOnly' => false,
+            ],
+            [
+                'href' => route('bucket.index'),
+                'text' => 'View Buckets',
+                'adminOnly' => true,
+            ],
+            [
+                'href' => route('approvals'),
+                'text' => 'Approve Users',
+                'adminOnly' => true,
+            ],
+        ];
         $transactions = Transaction::orderBy('date', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -24,6 +46,7 @@ class TransactionController extends Controller
         return view('transaction.index', [
             'transactions' => $transactions,
             'headers' => $headers,
+            'buttons' => $buttons,
         ])->with(request()->input('page'));
     }
 

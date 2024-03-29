@@ -5,14 +5,9 @@
             'block flex-1 border rounded bg-white px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 hover:cursor-pointer';
     @endphp
 
-    <div class="text-center my-4 text-xl text-white font-bold">
-        Edit Bucket
-    </div>
+    <div class="text-center my-4 text-xl text-white font-bold">Edit Bucket</div>
 
-    <form
-        action="{{ route('bucket.update', $bucket) }}"
-        method="POST"
-    >
+    <form action="{{ route('bucket.update', $bucket) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="flex flex-col items-center">
@@ -46,7 +41,9 @@
                 </div>
 
                 <div class="grid grid-cols-4 items-center gap-2">
-                    <label class="{{ $formLabel }}" for="spend">Category:</label>
+                    <label class="{{ $formLabel }}" for="spend">
+                        Category:
+                    </label>
                     <input
                         class="{{ $formInput }} col-span-3"
                         type="text"
@@ -57,15 +54,16 @@
                 </div>
 
                 <div class="grid grid-cols-4 items-center gap-3 font-bold">
-                    <button
-                        type="button"
-                        class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-1 col-span-1 text-gray-600"
-                    >
-                        <a href="/bucket">
+                    <a href="/bucket">
+                        <button
+                            type="button"
+                            class="bg-yellow-200 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-1 col-span-1 text-gray-600"
+                        >
                             <i class="fa-solid fa-left-long fa-l"></i>
-                            BACK
-                        </a>
-                    </button>
+                            Back
+                        </button>
+                    </a>
+
                     <button
                         type="button"
                         class="bg-yellow-300 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-span-1"
@@ -76,5 +74,4 @@
             </div>
         </div>
     </form>
-
 </x-layout>
