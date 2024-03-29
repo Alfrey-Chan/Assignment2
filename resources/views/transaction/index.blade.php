@@ -21,28 +21,10 @@
             </div>
         @endif
 
-        <div class="w-3/5 flex my-4 gap-3">
-            <a
-                href="{{ route('transaction.create') }}"
-                class="btn bg-yellow-200 py-2 px-4 font-bold"
-            >
-                New Transaction
-            </a>
-            <a
-                href="{{ route('transaction.import') }}"
-                class="btn bg-yellow-200 py-2 px-4 font-bold"
-            >
-                Upload CSV
-            </a>
-            @if (auth()->user() &&auth()->user()->isAdmin())
-                <a
-                    href="{{ route('bucket.index') }}"
-                    class="btn bg-yellow-200 py-2 px-4 font-bold"
-                >
-                    View Buckets
-                </a>
-            @endif
-        </div>
+        <x-functions
+            :buttons="$buttons"
+            :isAdmin="auth()->user() && auth()->user()->isAdmin()"
+        />
         <div class="text-center my-4 text-xl text-black font-bold">
             Transactions
         </div>
