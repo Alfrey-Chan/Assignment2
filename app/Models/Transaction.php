@@ -91,6 +91,7 @@ class Transaction extends Model
         $spend = $data['spend'] ? $data['spend'] : 0;
         $deposit = $data['deposit'] ? $data['deposit'] : 0;
         $balance = $data['balance'];
+        $user_id = auth()->id();
 
         if ($balance < 0) {
             throw new \Exception(
@@ -107,7 +108,7 @@ class Transaction extends Model
             'spend' => $spend,
             'deposit' => $deposit,
             'balance' => $balance,
-            'user_id' => auth()->id(),
+            'user_id' => $user_id,
         ]);
         $transaction->save();
 
