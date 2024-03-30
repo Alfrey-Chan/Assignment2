@@ -99,11 +99,15 @@
     </div>
 
     @php
-        $dataPoints = [];
-        foreach ($summary as $item) {
-            $dataPoints[] = ['label' => $item->category, 'y' => $item->total_spend];
-        }
-        $year = request('year') ?? date('Y');
+      $dataPoints = [];
+      $totalSpend = array_sum(array_column($summary->toArray(), 'total_spend'));
+
+      foreach ($summary as $item) {
+        $percentage = ($item->total_spend / $totalSpend) * 100;
+        $dataPoints[] = ['label' => $item->category, 'y' => $percentage];
+      }
+
+      $year = request('year') ?? date('Y');
     @endphp
 
     @push('scripts')

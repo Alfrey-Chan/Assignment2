@@ -3,7 +3,7 @@
     'isAdmin',
 ])
 
-<div class="w-3/5 flex my-4 gap-3">
+<div class="w-3/5 flex my-4 gap-3 justify-center">
     @foreach ($buttons as $button)
         @if ($isAdmin || ! $button['adminOnly'])
             <a
