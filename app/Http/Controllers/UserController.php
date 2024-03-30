@@ -16,8 +16,8 @@ class UserController extends Controller
     {
         $buttons = [
             [
-                'href' => route('transaction.create'),
-                'text' => 'New Transaction',
+                'href' => route('transaction.index'),
+                'text' => 'Transactions',
                 'adminOnly' => false,
             ],
             [
