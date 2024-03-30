@@ -210,7 +210,9 @@ class Transaction extends Model
             'category',
             DB::raw('SUM(spend) as total_spend'),
             DB::raw('SUM(deposit) as total_deposit')
-        )->groupBy('category');
+        )
+            ->groupBy('category')
+            ->where('user_id', auth()->id());
 
         if ($year) {
             $query->whereYear('date', $year);
