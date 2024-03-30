@@ -40,9 +40,10 @@ Route::middleware([EnsureIsAdmin::class, 'auth'])->group(function () {
     Route::get('approvals', [UserController::class, 'index'])->name(
         'approvals'
     );
-    Route::post('approvals/{user}', [UserController::class, 'approve'])->name(
-        'approve'
-    );
+    Route::post('approvals/{user}', [
+        UserController::class,
+        'toggleApprove',
+    ])->name('approve');
 });
 
 Route::get('/login', [UserController::class, 'login'])->name('login');

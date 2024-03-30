@@ -112,7 +112,7 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()
-            ->route('users.approve')
+            ->route('approvals')
             ->with('success', 'User removed successfully.');
     }
 
@@ -140,12 +140,19 @@ class UserController extends Controller
         return redirect()->route('welcome');
     }
 
-    public function approve($id)
+    public function toggleApprove($id)
     {
         $user = User::findOrFail($id);
-        $user->approved = true;
+        $user->approved = !$user->approved;
         $user->save();
 
-        return redirect()->route('approvals');
+        return redirect()
+            ->route('approvals')
+            ->with(
+                'success',
+                $user->approved
+                    ? 'User has been approved.'
+                    : 'User has been unapproved.'
+            );
     }
 }

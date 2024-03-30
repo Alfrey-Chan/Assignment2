@@ -55,12 +55,12 @@
                                 <div
                                     class="flex gap-2 justify-center text-zinc-900"
                                 >
-                                    @if ($user->approved == false)
-                                        <form
-                                            method="POST"
-                                            action="{{ route('approve', ['user' => $user->id]) }}"
-                                        >
-                                            @csrf
+                                    <form
+                                        method="POST"
+                                        action="{{ route('approve', ['user' => $user->id]) }}"
+                                    >
+                                        @csrf
+                                        @if ($user->approved == false)
                                             <button
                                                 type="submit"
                                                 class="flex btn bg-green-300 w-7 h-7 p-2 justify-center items-center"
@@ -69,23 +69,33 @@
                                                     class="fa-solid fa-check"
                                                 ></i>
                                             </button>
-                                        </form>
-                                        <form
-                                            action="{{ route('users.destroy', $user) }}"
-                                            method="POST"
-                                            class="delete-form"
-                                        >
-                                            @csrf
-                                            @method('DELETE')
+                                        @else
                                             <button
                                                 type="submit"
-                                                class="flex btn bg-red-400 p-2 w-7 h-7 justify-center items-center"
-                                                onclick="return confirm('Are you sure you want to delete this transaction?')"
+                                                class="flex btn bg-yellow-400 p-2 w-7 h-7 justify-center items-center"
                                             >
                                                 <i class="fa-solid fa-x"></i>
                                             </button>
-                                        </form>
-                                    @endif
+                                        @endif
+                                    </form>
+
+                                    <form
+                                        action="{{ route('users.destroy', $user) }}"
+                                        method="POST"
+                                        class="delete-form"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            type="submit"
+                                            class="flex btn bg-red-400 p-2 w-7 h-7 justify-center items-center"
+                                            onclick="return confirm('Are you sure you want to delete this user?')"
+                                        >
+                                            <i
+                                                class="fa-solid fa-trash-can"
+                                            ></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
