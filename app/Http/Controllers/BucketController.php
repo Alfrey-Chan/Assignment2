@@ -100,7 +100,11 @@ class BucketController extends Controller
     {
         return $request->validate([
             'vendor' => 'required|string',
-            'category' => ['required', 'string', new UniqueVendorCategory()],
+            'category' => [
+                'required',
+                'string',
+                new UniqueVendorCategory($request->vendor, $request->category),
+            ],
         ]);
     }
 }

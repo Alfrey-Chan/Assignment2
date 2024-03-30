@@ -4,11 +4,19 @@ namespace App\Rules;
 
 use Closure;
 use App\Models\Bucket;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 class UniqueVendorCategory implements ValidationRule
 {
+    private $vendor;
+    private $category;
+
+    public function __construct($vendor, $category)
+    {
+        $this->vendor = $vendor;
+        $this->category = $category;
+    }
+
     /**
      * Run the validation rule.
      *
@@ -19,17 +27,17 @@ class UniqueVendorCategory implements ValidationRule
         mixed $value,
         Closure $fail
     ): void {
-        $vendor = Request::get('vendor');
-        $category = Request::get('category');
-
-        $exists = Bucket::where('vendor', $vendor)
-            ->where('category', $category)
+        $exists = Bucket::whereRaw('LOWER(vendor) = LOWER(?)', [$this->vendor])
+            ->whereRaw('LOWER(category) = LOWER(?)', [$this->category])
             ->exists();
 
         if ($exists) {
             $fail(
-                'The :attribute is already paired with a category.'
-            )->translate();
+                $this->vendor .
+                    ' is already paired with ' .
+                    $this->category .
+                    '.'
+            );
         }
     }
 }
