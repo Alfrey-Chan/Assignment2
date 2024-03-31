@@ -169,7 +169,6 @@ class TransactionController extends Controller
                 pathinfo($originalFileName, PATHINFO_EXTENSION);
 
             Transaction::loadCsvData(storage_path('app/' . $tempFilePath));
-            // Transaction::storeImportedFile($tempFilePath);
             $newPath = 'imports/' . $importedFileName;
             Storage::move($tempFilePath, $newPath);
         } catch (\Exception $e) {

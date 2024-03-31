@@ -38,9 +38,6 @@ class Transaction extends Model
     {
         try {
             if (($handle = fopen($filePath, 'r')) !== false) {
-                // skip the first row (header row)
-                fgetcsv($handle);
-
                 while (($row = fgetcsv($handle)) !== false) {
                     // convert date from MM/DD/YYYY to YYYY-MM-DD
                     $dateObject = DateTime::createFromFormat('m/d/Y', $row[0]);
@@ -64,6 +61,7 @@ class Transaction extends Model
                         'user_id' => auth()->id(),
                     ]);
                     $transaction->save();
+                    Transaction::updateSubsequentBalances();
                 }
                 fclose($handle);
             }
@@ -71,18 +69,6 @@ class Transaction extends Model
             throw new Exception('Error processing CSV file.');
         }
     }
-
-    // public static function storeImportedFile($filePath)
-    // {
-    //     $fileName = basename($filePath);
-    //     $newFileName = $fileName . '.imported';
-    //     // storage_path generates the full path to the storage directory, and appends whatever you pass as an argument to it
-    //     $newFilePath = storage_path('imports/' . $newFileName);
-
-    //     if (!copy($filePath, $newFilePath)) {
-    //         throw new Exception("Failed to move and rename file: $filePath");
-    //     }
-    // }
 
     public static function createNewTransaction($data)
     {
@@ -143,21 +129,11 @@ class Transaction extends Model
 
     public static function updateSubsequentBalances()
     {
-        // Fetch the earliest transaction
-        $earliestTransaction = self::orderBy('date', 'asc')->first();
+        // Fetch all transactions sorted by date
+        $transactions = self::orderBy('date', 'asc')->get();
 
-        // If no more transactions
-        if (!$earliestTransaction) {
-            return;
-        }
-
-        // Set the starting balance to the balance of the earliest transaction
-        $balance = $earliestTransaction->balance;
-
-        // Fetch all transactions except the earliest one, sorted by date
-        $transactions = self::where('id', '!=', $earliestTransaction->id)
-            ->orderBy('date', 'asc')
-            ->get();
+        // Initialize balance to 0
+        $balance = 0;
 
         foreach ($transactions as $transaction) {
             // Calculate the new balance
