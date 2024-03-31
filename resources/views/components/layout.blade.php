@@ -58,6 +58,11 @@
         {{-- In other view files, content nested inside a <x-layout> tag will be injected/pushed to $slot --}}
         {{ $slot }}
 
+        <footer
+            class="flex justify-center items-center bg-yellow-200 absolute bottom-0 w-full h-10 uppercase tracking-wider font-bold text-xs"
+        >
+            Alfrey Chan and Cheryl Lau
+        </footer>
         {{-- scripts --}}
         @stack('scripts')
     </body>
