@@ -5,9 +5,7 @@
             'block flex-1 border rounded bg-white px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 hover:cursor-pointer';
     @endphp
 
-    <div class="text-center my-4 text-xl text-black dark:text-white font-bold">
-        New Bucket
-    </div>
+    <div class="text-center my-4 text-xl text-black">New Bucket</div>
 
     <form action="{{ route('bucket.store') }}" method="POST">
         @csrf

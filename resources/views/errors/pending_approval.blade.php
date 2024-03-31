@@ -1,6 +1,6 @@
 <x-layout>
     <div class="flex flex-col items-center justify-center h-screen gap-4">
-        <h1 class="text-4xl font-bold text-center text-black dark:text-white">
+        <h1 class="text-4xl font-bold text-center text-black">
             Bzz Bzz...your registration is still pending approval
         </h1>
         <div class="flex w-full justify-center">

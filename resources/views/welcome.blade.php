@@ -1,6 +1,6 @@
 <x-layout>
     <div class="flex flex-col items-center justify-center h-screen">
-        <h1 class="text-4xl font-bold text-center text-black dark:text-white">
+        <h1 class="text-4xl font-bold text-center text-black">
             Welcome to BusyBees
         </h1>
         <!DOCTYPE html>
