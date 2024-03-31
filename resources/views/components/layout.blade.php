@@ -19,9 +19,7 @@
         ></script>
     </head>
 
-    <body
-        class="font-sans antialiased dark:bg-black dark:text-white/50 bg-zinc-100"
-    >
+    <body class="font-sans antialiased bg-zinc-100">
         <header>
             <nav class="bg-yellow-300">
                 <ul>
