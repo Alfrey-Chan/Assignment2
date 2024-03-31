@@ -71,9 +71,7 @@
                     />
                 </div>
                 <div class="grid grid-cols-4 items-center gap-2">
-                    <label for="balance" class="{{ $formLabel }}">
-                        Balance:
-                    </label>
+                    <label for="balance" class="{{ $formLabel }}"></label>
                     <input
                         type="hidden"
                         id="balance"

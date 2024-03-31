@@ -95,9 +95,7 @@
                         class="{{ $formLabel }}"
                         for="balance"
                         class="transaction-balance"
-                    >
-                        Balance:
-                    </label>
+                    ></label>
                     <input
                         class="{{ $formInput }} col-span-3"
                         type="hidden"
