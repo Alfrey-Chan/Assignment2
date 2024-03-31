@@ -115,12 +115,11 @@
                             BACK
                         </a>
                     </button>
-                    <button
-                        type="button"
+                    <input
                         class="bg-yellow-300 rounded-md py-1 px-2 transform hover:scale-110 shadow-md col-start-3 col-span-1"
-                    >
-                        <input type="submit" value="SAVE" />
-                    </button>
+                        type="submit"
+                        value="SAVE"
+                    />
                 </div>
             </div>
         </div>

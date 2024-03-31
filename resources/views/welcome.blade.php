@@ -38,4 +38,9 @@
             </div>
         </div>
     </div>
+    <footer
+            class="flex justify-center items-center bg-yellow-200 sticky bottom-0 w-full h-10 uppercase tracking-wider font-bold text-xs"
+        >
+            Alfrey Chan and Cheryl Lau
+        </footer>
 </x-layout>
