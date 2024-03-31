@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('category');
             $table->float('spend')->nullable();
             $table->float('deposit')->nullable();
-            $table->float('balance');
+            $table->float('balance')->nullable();
             $table->string('user_id');
             $table->timestamps();
         });

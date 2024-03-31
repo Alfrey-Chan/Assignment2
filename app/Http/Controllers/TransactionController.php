@@ -73,7 +73,7 @@ class TransactionController extends Controller
         $validatedData = self::validateTransaction($request);
 
         try {
-            Transaction::checkNegativeBalances($validatedData);
+            // Transaction::checkNegativeBalances($validatedData);
             Transaction::createNewTransaction($validatedData);
             Transaction::updateSubsequentBalances();
         } catch (\Exception $e) {
@@ -141,7 +141,7 @@ class TransactionController extends Controller
             'vendor' => 'required|string',
             'spend' => 'nullable|numeric|min:0',
             'deposit' => 'nullable|numeric|min:0',
-            'balance' => 'required|numeric',
+            'balance' => 'numeric',
             'user_id' => 'required|string',
         ]);
     }

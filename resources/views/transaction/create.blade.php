@@ -75,9 +75,10 @@
                         Balance:
                     </label>
                     <input
-                        type="text"
+                        type="hidden"
                         id="balance"
                         name="balance"
+                        value="0"
                         class="{{ $formInput }} col-span-3"
                     />
                 </div>

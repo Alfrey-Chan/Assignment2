@@ -90,7 +90,8 @@ class Transaction extends Model
         $vendor = $data['vendor'];
         $spend = $data['spend'] ? $data['spend'] : 0;
         $deposit = $data['deposit'] ? $data['deposit'] : 0;
-        $balance = $data['balance'];
+        // $balance = $data['balance'];
+        $balance = self::calculateBalance($date, $spend, $deposit);
         $user_id = auth()->id();
 
         if ($balance < 0) {
@@ -144,6 +145,11 @@ class Transaction extends Model
     {
         // Fetch the earliest transaction
         $earliestTransaction = self::orderBy('date', 'asc')->first();
+
+        // If no more transactions
+        if (!$earliestTransaction) {
+            return;
+        }
 
         // Set the starting balance to the balance of the earliest transaction
         $balance = $earliestTransaction->balance;
