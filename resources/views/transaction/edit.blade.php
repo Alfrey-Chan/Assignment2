@@ -28,6 +28,12 @@
                 @endif
             </div>
             <div class="flex flex-col w-1/3 gap-2">
+                <input
+                    type="hidden"
+                    id="user_id"
+                    name="user_id"
+                    value="{{ auth()->id() }}"
+                />
                 <div class="grid grid-cols-4 items-center gap-2">
                     <label class="{{ $formLabel }}" for="date">Date:</label>
                     <input
@@ -94,7 +100,7 @@
                     </label>
                     <input
                         class="{{ $formInput }} col-span-3"
-                        type="text"
+                        type="hidden"
                         id="balance"
                         name="balance"
                         value="{{ $transaction->balance }}"
